@@ -106,13 +106,13 @@ public class DatasetBasic {
 		 */
 		
 		try {
-			df.createGlobalTempView("people");
+			df.createGlobalTempView("peopleGlobal");
 		} catch (AnalysisException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		spark.sql("SELECT * FROM global_temp.people").show();
+		spark.sql("SELECT * FROM global_temp.peopleGlobal").show();
 		
 		/*+---+-------+
 		|age|   name|

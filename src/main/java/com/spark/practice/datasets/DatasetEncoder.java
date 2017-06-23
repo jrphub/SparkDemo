@@ -39,7 +39,7 @@ public class DatasetEncoder {
 		+---+----+*/
 		
 		//A usecase
-		String path = "file:///home/jrp/workspace_1/Spark21-Example/input-data/people.json";
+		String path = "file:///home/jrp/workspace_1/SparkDemo/input-data/people.json";
 		Dataset<Person> peopleDS = spark.read().json(path).as(personEncoder);
 		peopleDS.show();
 		
