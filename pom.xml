@@ -29,6 +29,13 @@
 			<artifactId>spark-sql_${spark.scala.version}</artifactId>
 			<version>${spark.version}</version>
 		</dependency>
+		
+		<!-- for hive -->
+		<dependency>
+			<groupId>org.apache.spark</groupId>
+			<artifactId>spark-hive_${spark.scala.version}</artifactId>
+			<version>${spark.version}</version>
+		</dependency>
 
 		<!-- Test -->
 		<dependency>

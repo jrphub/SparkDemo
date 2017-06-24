@@ -2,3 +2,5 @@
 .project
 .settings
 target
+derby.log
+metastore_db/

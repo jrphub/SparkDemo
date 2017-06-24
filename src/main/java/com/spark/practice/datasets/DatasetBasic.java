@@ -18,7 +18,7 @@ public class DatasetBasic {
 
 		Dataset<Row> df = spark
 				.read()
-				.json("file:///home/jrp/workspace_1/Spark21-Example/input-data/people.json");
+				.json("file:///home/jrp/workspace_1/SparkDemo/input-data/people.json");
 		df.show();
 		/*+---+-------+
 		|age|   name|
