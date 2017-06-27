@@ -27,7 +27,7 @@ public class StreamingUpdateStateByKey {
                 Durations.seconds(10)); // Batch Interval
 
         // set checkpoint directory
-        jsc.checkpoint("C:\\ws\\fae-ws-spark16\\SparkDemo\\ckpt-dir");
+        jsc.checkpoint("file:///home/jrp/workspace_1/SparkDemo/ckpt-dir");
 
         // Receive streaming data from the source
         JavaReceiverInputDStream<String> lines = jsc
