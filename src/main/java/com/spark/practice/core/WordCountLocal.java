@@ -23,17 +23,26 @@ public class WordCountLocal {
 				.setMaster("local[*]");
 
 		JavaSparkContext jsc = new JavaSparkContext(sparkConf);
-
+		
+		//1. get input
 		JavaRDD<String> distFile = jsc
 				.textFile("file:///home/jrp/workspace_1/SparkDemo/input-data/wordcount.txt");
-
+		
+		//2. Get collection of all words
+		//apple orange grapes apple orange
 		JavaRDD<String> flat_words = distFile
 				.flatMap(new FlatMapFunction<String, String>() {
 					public Iterator<String> call(String line) throws Exception {
 						return Arrays.asList(line.split(" ")).iterator();
 					}
 				});
-
+		
+		//3. 
+		// apple 1
+		// orange 1
+		// grapes 1
+		// apple 1
+		// orange 1
 		JavaPairRDD<String, Long> flat_words_mapped = flat_words
 				.mapToPair(new PairFunction<String, String, Long>() {
 					public Tuple2<String, Long> call(String flat_word)
@@ -41,7 +50,11 @@ public class WordCountLocal {
 						return new Tuple2<String, Long>(flat_word, 1L);
 					}
 				});
-
+		
+		//4.
+		// apple 2
+		// orange 2
+		// grapes 1
 		JavaPairRDD<String, Long> flat_words_reduced = flat_words_mapped
 				.reduceByKey(new Function2<Long, Long, Long>() {
 					public Long call(Long l1, Long l2) throws Exception {

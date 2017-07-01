@@ -34,6 +34,7 @@ public class StreamingBasic {
 
 		// Each record in the "lines" stream is a line of text
 		// Split each line into words
+		//apple orange grape apple orange
 		JavaDStream<String> words = lines
 				.flatMap(new FlatMapFunction<String, String>() {
 					@Override
@@ -43,6 +44,11 @@ public class StreamingBasic {
 				});
 
 		// Count each word in each batch
+		// apple 1
+		// orange 1
+		// grapes 1
+		// apple 1
+		// orange 1
 		JavaPairDStream<String, Long> wordPair = words
 				.mapToPair(new PairFunction<String, String, Long>() {
 					@Override
@@ -51,7 +57,10 @@ public class StreamingBasic {
 						return new Tuple2<String, Long>(word, 1L);
 					}
 				});
-
+		
+		// apple 2
+		// orange 2
+		// grapes 1
 		JavaPairDStream<String, Long> wordCount = wordPair
 				.reduceByKey(new Function2<Long, Long, Long>() {
 

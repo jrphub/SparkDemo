@@ -31,7 +31,7 @@ public class DatasetCustomized {
                 .javaRDD();
         // Get the schema at runtime
         // Assuming name and age
-        String schemaStr = "name,age";
+        String schemaStr = "name,age";//default : _col0, _col1
 
         // generate the schema based on string of schema
         List<StructField> fields = new ArrayList<>();

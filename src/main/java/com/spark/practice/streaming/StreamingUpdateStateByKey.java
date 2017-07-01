@@ -35,6 +35,7 @@ public class StreamingUpdateStateByKey {
 
         // Each record in the "lines" stream is a line of text
         // Split each line into words
+        //apple orange grapes apple orange
         JavaDStream<String> words = lines
                 .flatMap(new FlatMapFunction<String, String>() {
                     @Override
@@ -44,6 +45,11 @@ public class StreamingUpdateStateByKey {
                 });
 
         // Count each word in each batch
+        // apple 1
+ 		// orange 1
+ 		// grapes 1
+ 		// apple 1
+ 		// orange 1
         JavaPairDStream<String, Long> wordPair = words
                 .mapToPair(new PairFunction<String, String, Long>() {
                     @Override
