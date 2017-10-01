@@ -23,37 +23,44 @@
 			<artifactId>spark-core_${spark.scala.version}</artifactId>
 			<version>${spark.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.spark</groupId>
 			<artifactId>spark-sql_${spark.scala.version}</artifactId>
 			<version>${spark.version}</version>
 		</dependency>
-		
+
 		<!-- for hive -->
 		<dependency>
 			<groupId>org.apache.spark</groupId>
 			<artifactId>spark-hive_${spark.scala.version}</artifactId>
 			<version>${spark.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.6</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.spark</groupId>
 			<artifactId>spark-streaming_${spark.scala.version}</artifactId>
 			<version>${spark.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.spark</groupId>
 			<artifactId>spark-streaming-kafka-0-8_${spark.scala.version}</artifactId>
 			<version>${spark.version}</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.apache.kafka</groupId>
+			<artifactId>kafka-clients</artifactId>
+			<version>0.11.0.1</version>
+		</dependency>
+
 
 		<!-- Test -->
 		<dependency>
