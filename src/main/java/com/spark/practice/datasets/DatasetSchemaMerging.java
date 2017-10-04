@@ -44,7 +44,12 @@ public class DatasetSchemaMerging {
 		cubesDf.write().mode(SaveMode.Overwrite).parquet("file:///home/jrp/workspace_1/SparkDemo/output/test_merge/key=2");
 		
 		// Read the partitioned table
-		Dataset<Row> mergedDF = spark.read().option("mergeSchema", true).parquet("file:///home/jrp/workspace_1/SparkDemo/output/test_merge").orderBy("key");
+		Dataset<Row> mergedDF = spark
+				.read()
+				.option("mergeSchema", true)
+				.parquet(
+						"file:///home/jrp/workspace_1/SparkDemo/output/test_merge")
+				.orderBy("key");
 		mergedDF.show();
 		/*+------+-----+----+---+
 		|square|value|cube|key|

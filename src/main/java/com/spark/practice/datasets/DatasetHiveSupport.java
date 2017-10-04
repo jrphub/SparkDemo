@@ -16,8 +16,10 @@ public class DatasetHiveSupport {
 		SparkConf conf = new SparkConf()
 				.setMaster("local[*]")
 				.setAppName("Dataset_Hive_Support")
+				//Not using hive set up via hive-site.xml, core-site.xml
 				.set("spark.sql.warehouse.dir",
 						"file:///home/jrp/workspace_1/SparkDemo/spark-warehouse");
+				//This will create metastore_db in project directory
 
 		SparkSession spark = SparkSession.builder().config(conf)
 				.enableHiveSupport().getOrCreate();
@@ -31,7 +33,7 @@ public class DatasetHiveSupport {
 		+--------+---------+-----------+*/
 		
 		spark.sql("LOAD DATA LOCAL INPATH 'file:///home/jrp/workspace_1/SparkDemo/input-data/kv1.parquet' OVERWRITE INTO TABLE src");
-		
+
 		spark.sql("select * from src").show();
 		/*+---+-------+
 		|key|  value|

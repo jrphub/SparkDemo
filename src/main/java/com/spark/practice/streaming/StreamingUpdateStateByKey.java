@@ -58,20 +58,14 @@ public class StreamingUpdateStateByKey {
                         return new Tuple2<String, Long>(word, 1L);
                     }
                 });
-        //scala code
-        /*def updateFunction(newValues: Seq[Int], runningCount: Option[Int]): Option[Int] = {
-                val newCount = ...  // add the new values with the previous running count to get the new count
-                Some(newCount)
-            }
-            val runningCounts = pairs.updateStateByKey[Int](updateFunction _)
-        */
+
         JavaPairDStream<String, Long> runningCounts = wordPair.updateStateByKey(
                 new Function2<List<Long>, Optional<Long>, Optional<Long>>() {
                     public Optional<Long> call(List<Long> values,
                             Optional<Long> state) throws Exception {
                         Long currentSum = state.orElse(0L); // state != null ?
                                                             // state : OL;
-                        for (Long value : values) {
+                        for (Long value : values) { //1, 1
                             currentSum = currentSum + value;
                         }
                         return Optional.of(currentSum);

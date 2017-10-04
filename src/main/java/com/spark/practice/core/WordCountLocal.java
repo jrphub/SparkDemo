@@ -20,13 +20,14 @@ public class WordCountLocal {
 
 	public static void main(String[] args) {
 		SparkConf sparkConf = new SparkConf().setAppName("WordCount_Local")
+				.set("spark.executor.instances", "2")
 				.setMaster("local[*]");
 
 		JavaSparkContext jsc = new JavaSparkContext(sparkConf);
 		
 		//1. get input
 		JavaRDD<String> distFile = jsc
-				.textFile("file:///home/jrp/workspace_1/SparkDemo/input-data/wordcount.txt");
+				.textFile("file:///home/jrp/workspace_1/SparkDemo/input-data/ratings.dat");
 		
 		//2. Get collection of all words
 		//apple orange grapes apple orange

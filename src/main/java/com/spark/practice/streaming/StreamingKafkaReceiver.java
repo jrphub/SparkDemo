@@ -36,7 +36,7 @@ public class StreamingKafkaReceiver {
 		
 		int numThreads = 2;
 		Map<String, Integer> topicMap = new HashMap<>();
-		String[] topics = { "test" };
+		String[] topics = { "test2" };
 		for (String topic : topics) {
 			topicMap.put(topic, numThreads);
 		}

@@ -38,7 +38,7 @@ public class StreamingKafkaDirect {
 
 
 		String brokers = "localhost:9092";
-		String topics = "test";
+		String topics = "test-producer";
 
 		Set<String> topicsSet = new HashSet<>(Arrays.asList(topics.split(",")));
 		Map<String, String> kafkaParams = new HashMap<>();

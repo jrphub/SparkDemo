@@ -3,6 +3,7 @@ package com.spark.practice.streaming;
 import java.util.Arrays;
 import java.util.Iterator;
 
+import org.apache.hadoop.hive.metastore.api.Date;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.function.FlatMapFunction;
 import org.apache.spark.api.java.function.Function2;
@@ -31,7 +32,6 @@ public class StreamingBasic {
 		// start at terminal : nc -lk 9999
 		JavaReceiverInputDStream<String> lines = jsc.socketTextStream(
 				"localhost", 9999);
-
 		// Each record in the "lines" stream is a line of text
 		// Split each line into words
 		//apple orange grape apple orange
@@ -72,6 +72,7 @@ public class StreamingBasic {
 
 		// Print the first ten elements of each RDD generated in this DStream to
 		// the console
+		
 		wordCount.print();
 
 		// Start the computation
