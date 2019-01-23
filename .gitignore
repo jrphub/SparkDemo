@@ -5,3 +5,6 @@ target
 derby.log
 metastore_db/
 ckpt-dir/
+.idea/SparkDemo.iml
+.idea/
+dependency-reduced-pom.xml

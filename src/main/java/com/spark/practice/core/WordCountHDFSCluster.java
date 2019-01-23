@@ -1,11 +1,5 @@
 package com.spark.practice.core;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Iterator;
-
-import org.apache.commons.io.FileUtils;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
@@ -13,21 +7,30 @@ import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.FlatMapFunction;
 import org.apache.spark.api.java.function.Function2;
 import org.apache.spark.api.java.function.PairFunction;
-
 import scala.Tuple2;
 
-public class WordCountHDFS {
+import java.util.Arrays;
+import java.util.Iterator;
+
+/*
+
+hadoop fs -rm -r /user/huser/wordcountHdfs/output/
+export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
+spark-submit --class com.spark.practice.core.WordCountHDFSCluster --master yarn --deploy-mode cluster --executor-memory 2g spark-uber.jar /user/huser/wordcountHdfs/input-data/wordcount.txt
+
+*/
+public class WordCountHDFSCluster {
 
 	public static void main(String[] args) {
 		SparkConf sparkConf = new SparkConf().setAppName(
-				"WordCount_LocalToHDFS").setMaster("local[*]");
-		//to run as different user which is a hadoop user
+				"WordCount_Cluster");
+		//to run as different user which is a hadoop user, if needed
 		System.setProperty("HADOOP_USER_NAME", "huser");
 
 		JavaSparkContext jsc = new JavaSparkContext(sparkConf);
 
 		JavaRDD<String> distFile = jsc
-				.textFile("file:///home/jrp/workspace_1/SparkDemo/input-data/wordcount.txt");
+				.textFile(args[0]);
 
 		JavaRDD<String> flat_words = distFile
 				.flatMap(new FlatMapFunction<String, String>() {
