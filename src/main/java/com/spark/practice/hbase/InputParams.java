@@ -11,6 +11,7 @@ public class InputParams{
     private String tableName;
     private String rowKey;
     private ArrayList<HashMap<String,String>> rowValues = new ArrayList<HashMap<String, String>>();
+    private String sqlQuery;
 
     public String getInputFile() {
         return inputFile;
@@ -56,5 +57,13 @@ public class InputParams{
 
     public void setRowValues(ArrayList<HashMap<String,String>> rowValues) {
         this.rowValues = rowValues;
+    }
+
+    public String getSqlQuery() {
+        return sqlQuery;
+    }
+
+    public void setSqlQuery(String sqlQuery) {
+        this.sqlQuery = sqlQuery;
     }
 }

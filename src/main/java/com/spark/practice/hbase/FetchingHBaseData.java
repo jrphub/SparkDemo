@@ -38,12 +38,12 @@ https://sparkkb.wordpress.com/2015/05/05/read-hbase-table-data-and-create-sql-da
  */
 public class FetchingHBaseData {
     public static void main(String[] args) throws IOException {
-        String appName = "FetchingHBaseData";
-        SparkConf sparkConf = new SparkConf().setAppName(
-                appName);
         //to run as different user which is a hadoop user
         System.setProperty("HADOOP_USER_NAME", "huser");
 
+        String appName = "FetchingHBaseData";
+        SparkConf sparkConf = new SparkConf().setAppName(
+                appName);
         JavaSparkContext jsc = new JavaSparkContext(sparkConf);
 
         SparkSession sparkSession = SparkSession.builder()
@@ -56,7 +56,7 @@ public class FetchingHBaseData {
         Yaml yaml = new Yaml(new Constructor(InputParams.class));
         InputParams config = (InputParams) yaml.load(input);
 
-        //create a connection with HBase
+        //create a connection with HBase (Optional)
         Configuration configuration = null;
         try{
             configuration = HBaseConfiguration.create();
@@ -73,7 +73,8 @@ public class FetchingHBaseData {
         conf.set(TableInputFormat.INPUT_TABLE, config.getTableName());
         conf.set(TableInputFormat.SCAN_COLUMN_FAMILY, "movie");
         conf.set(TableInputFormat.SCAN_COLUMN_FAMILY, "movie-stats");
-        conf.set(TableInputFormat.SCAN_COLUMNS, "movie:title movie:genre movie:description movie:director movie:actors movie:runtime" +
+        conf.set(TableInputFormat.SCAN_COLUMNS, "movie:title movie:genre movie:description " +
+                "movie:director movie:actors movie:runtime" +
                 " movie-stats:votes movie-stats:revenue movie-stats:rating movie-stats:year");
 
         JavaPairRDD<ImmutableBytesWritable, Result> hBaseRDD =
@@ -117,11 +118,13 @@ public class FetchingHBaseData {
 
         Dataset<Row> schemaRDD =   sparkSession.createDataFrame(rowPairRDD.values(), Movies.class);
         //schemaRDD.show();
+        schemaRDD.cache(); //persist(MEMORY_ONLY)
         schemaRDD.createOrReplaceTempView(config.getTableName());
-        Dataset<Row> top10moviesDF = sparkSession.sql("select title, rating, revenue from " + config.getTableName() + " where year='2012' order by rating,revenue desc limit 10");
-        top10moviesDF.show();
-        schemaRDD.cache();
-        schemaRDD.repartition(100);
+
+        Dataset<Row> queryResultDF = sparkSession.sql(config.getSqlQuery());
+        queryResultDF.show();
+
+        //schemaRDD.repartition(100);
         schemaRDD.printSchema();
         jsc.stop();
 

@@ -98,9 +98,14 @@ public class LoadingHBase {
                         Put put = new Put(Bytes.toBytes(key));
 
                         for(HashMap<String,String> val : ROW_VALUES_B.value()){
-                            String[] cq = val.get("qualifier").toString().split(":");
-                            put.add(Bytes.toBytes(cq[0]), Bytes.toBytes(cq[1]),
-                                    Bytes.toBytes(data.getAs(val.get("value")).toString()));
+                            if (val != null) {
+                                String[] cq = val.get("qualifier").toString().split(":");
+                                if (data.getAs(val.get("value")) != null) {
+                                    put.add(Bytes.toBytes(cq[0]), Bytes.toBytes(cq[1]),
+                                            Bytes.toBytes(data.getAs(val.get("value")).toString()));
+                                }
+
+                            }
                         }
 
                         return new Tuple2<ImmutableBytesWritable, Put>(

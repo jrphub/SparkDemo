@@ -1,0 +1,29 @@
+inputFile: hdfs:///user/huser/hbase-demo/imdb_movie_data.csv
+quorum: "localhost"
+port: "2181"
+tableName: imdb_movies_demo01
+sqlQuery: "select * from imdb_movies_demo01 where title='Moonrise Kingdom'"
+rowKey: rank:year
+rowValues:
+    - qualifier   : movie:rank
+      value       : rank
+    - qualifier   : movie:title
+      value       : title
+    - qualifier   : movie:genre
+      value       : genre
+    - qualifier   : movie:description
+      value       : description
+    - qualifier   : movie:director
+      value       : director
+    - qualifier   : movie:actors
+      value       : actors
+    - qualifier   : movie:runtime
+      value       : runtime
+    - qualifier   : movie-stats:votes
+      value       : votes
+    - qualifier   : movie-stats:revenue
+      value       : revenue
+    - qualifier   : movie-stats:rating
+      value       : rating
+    - qualifier   : movie-stats:year
+      value       : year
