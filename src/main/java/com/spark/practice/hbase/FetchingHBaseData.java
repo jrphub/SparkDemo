@@ -30,8 +30,10 @@ Prerequisites :
 create hbase table
 create 'imdb_movies', 'movie', 'movie-stats'
 
+Build a jar file and rename it to spark-uber.jar
+
 export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
-spark-submit --class com.spark.practice.hbase.LoadingHBase --master yarn --deploy-mode cluster --executor-memory 2g spark-uber.jar params.yml
+spark-submit --class com.spark.practice.hbase.FetchingHBaseData --master yarn --deploy-mode cluster --executor-memory 2g --files file:///home/huser/spark-app/params.yml spark-uber.jar params.yml
 
 https://sparkkb.wordpress.com/2015/05/05/read-hbase-table-data-and-create-sql-dataframe-using-spark-api-java-code/
 
@@ -74,11 +76,11 @@ public class FetchingHBaseData {
         conf.set(TableInputFormat.SCAN_COLUMN_FAMILY, "movie");
         conf.set(TableInputFormat.SCAN_COLUMN_FAMILY, "movie-stats");
         conf.set(TableInputFormat.SCAN_COLUMNS, "movie:title movie:genre movie:description " +
-                "movie:director movie:actors movie:runtime" +
-                " movie-stats:votes movie-stats:revenue movie-stats:rating movie-stats:year");
+                    "movie:director movie:actors movie:runtime" +
+                    " movie-stats:votes movie-stats:revenue movie-stats:rating movie-stats:year");
 
         JavaPairRDD<ImmutableBytesWritable, Result> hBaseRDD =
-                jsc.newAPIHadoopRDD(conf, TableInputFormat.class, ImmutableBytesWritable.class, Result.class);
+                    jsc.newAPIHadoopRDD(conf, TableInputFormat.class, ImmutableBytesWritable.class, Result.class);
 
         // in the rowPairRDD the key is hbase's row key, The Row is the hbase's Row data
         JavaPairRDD<String, Movies> rowPairRDD = hBaseRDD.mapToPair(

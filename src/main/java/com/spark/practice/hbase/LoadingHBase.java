@@ -29,8 +29,12 @@ Prerequisites :
 create hbase table
 create 'imdb_movies', 'movie', 'movie-stats'
 
+Build the project
+rename the jar file : spark-uber.jar
+
 export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
-spark-submit --class com.spark.practice.hbase.LoadingHBase --master yarn --deploy-mode cluster --executor-memory 2g spark-uber.jar params.yml
+
+spark-submit --class com.spark.practice.hbase.LoadingHBase --master yarn --deploy-mode cluster --executor-memory 2g --files file:///home/huser/spark-app/params.yml spark-uber.jar params.yml
 
 ref : https://medium.com/@sathishjayaram/import-data-from-csv-files-to-hbase-using-spark-1749f395a16b
 
@@ -74,7 +78,7 @@ public class LoadingHBase {
 
         //broadcast row key & value data for the Hbase table so the info is
         //available to the worker nodes for processing
-        Broadcast<String> ROW_KEY_B = jsc.broadcast(config.getRowKey());
+        Broadcast<String> ROW_KEY_B = jsc.broadcast(config.getRowKey());//rank:year
         Broadcast<ArrayList<HashMap<String,String>>> ROW_VALUES_B = jsc.broadcast(config.getRowValues());
 
         //RDD of rows is created from the given CSV file.
@@ -88,21 +92,24 @@ public class LoadingHBase {
                     @Override
                     public Tuple2<ImmutableBytesWritable, Put> call(Row data)
                             throws Exception {
-
-                        String[] rowKeys =  ROW_KEY_B.value().split(":");
+                        //Creating ROWKEY
+                        String[] rowKeys =  ROW_KEY_B.value().split(":"); //[rank,year]
                         String key = "";
                         for(String k : rowKeys){
-                            key = key + data.getAs(k) + ":";
+                            key = key + data.getAs(k) + ":";//1:2014:
                         }
-                        key = key.substring(0, key.length() - 1);
+                        key = key.substring(0, key.length() - 1);//1:2014
                         Put put = new Put(Bytes.toBytes(key));
 
+                        // creating row value
                         for(HashMap<String,String> val : ROW_VALUES_B.value()){
                             if (val != null) {
-                                String[] cq = val.get("qualifier").toString().split(":");
+                                String[] cq = val.get("qualifier").toString().split(":");//[movie,rank], [movie,title]
                                 if (data.getAs(val.get("value")) != null) {
                                     put.add(Bytes.toBytes(cq[0]), Bytes.toBytes(cq[1]),
                                             Bytes.toBytes(data.getAs(val.get("value")).toString()));
+                                    //movie,rank,1
+                                    //movie,title,abc
                                 }
 
                             }
